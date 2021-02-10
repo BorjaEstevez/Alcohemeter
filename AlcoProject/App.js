@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View,TextInput } from 'react-native';
+import { StyleSheet, Text, View,TextInput, Button } from 'react-native';
 import { Picker} from '@react-native-community/picker';
 import RadioForm from 'react-native-simple-radio-button';
 
@@ -8,14 +8,26 @@ import RadioForm from 'react-native-simple-radio-button';
 export default function App() {
   const [numbBottles, setnumbottles] = useState(1);
   const [time, settime] = useState(1);
-  const [gender, setgender] = useState('female');
+  const [gender, setgender] = useState('male');
   const [weight, setWeight] = useState(0);
+  const [promilles, setPromilles] = useState(0);
 
-  var radio_props = [
+  const Gender = [
     {label: 'Male', value: 'Male'},
     {label: 'Female', value: 'Female'}
   ];
 
+  function calculate(){
+    let result = 0;
+    if (gender == 'male'){
+      result = (((numbBottles * 0.33 * 8 * 4.5)- (weight/10)) * time) / (weight * 0.7)
+    }
+    else{
+      result = (((numbBottles * 0.33 * 8 * 4.5)- (weight/10)) * time) / (weight * 0.6) 
+    }
+    setPromilles(result);
+  }
+  
   return (
     <View style={styles.container}>
       <View>
@@ -64,19 +76,20 @@ export default function App() {
       <View>
         <Text>Gender</Text>
         <RadioForm
-          radio_props={radio_props}
+          radio_props={Gender}
           initial ={1}
           onPress={(value)=> setgender(value)}></RadioForm>
       </View>
 
       <View>
-        <Text>Promilles</Text>
-        <TextInput keyboardType='numeric'></TextInput>
+        <Text>{promilles.toFixed(0)}</Text>
+        <Button onPress = {calculate} title = "Calculate"> </Button>
       </View>
 
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
