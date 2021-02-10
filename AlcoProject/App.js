@@ -19,11 +19,16 @@ export default function App() {
 
   function calculate(){
     let result = 0;
-    if (gender == 'male'){
-      result = (((numbBottles * 0.33 * 8 * 4.5)- (weight/10)) * time) / (weight * 0.7)
+    const liters = numbBottles * 0.33;
+    const grams = liters * 8 * 4.5;
+    const burning = weight / 10;
+    const gramsLeft = grams - burning * time;
+
+    if (gender == 'Male'){
+      result = (gramsLeft / (weight * 0.7))
     }
     else{
-      result = (((numbBottles * 0.33 * 8 * 4.5)- (weight/10)) * time) / (weight * 0.6) 
+      result = (gramsLeft / (weight * 0.6)) 
     }
     setPromilles(result);
   }
@@ -82,7 +87,7 @@ export default function App() {
       </View>
 
       <View>
-        <Text>{promilles.toFixed(0)}</Text>
+        <Text>{promilles.toFixed(2)}</Text>
         <Button onPress = {calculate} title = "Calculate"> </Button>
       </View>
 
